@@ -53,7 +53,7 @@ let opts = {
 }
 ```
 
-Alternatively, you could pass the session data returned by `let recall = Gun.recall(user.recall() [, opts])` to another storage service.
+Alternatively, you could pass the session data returned by `let recall = await Gun.recall(user.recall() [, opts])` to another storage service.
 
 ### `let recall = await Gun.recall(user.recall() [, opts])`
 Creates or modifies session storage files given the optional `opts` object and returns a gun `user.recall` object that can be passed into gun to reauthenticate the stored user using `gun.user().auth(recall)`.
