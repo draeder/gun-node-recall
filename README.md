@@ -29,7 +29,7 @@ user.create(username, password, async cb => {
   let opts = {
     filename: 'sessionStorage.json',
     dotenv: true,
-    dotenvViariable: 'GUN_NODE_RECALL'
+    dotenvVariable: 'GUN_NODE_RECALL'
   }
   
   let recall = await Gun.recall(user.recall(), opts)

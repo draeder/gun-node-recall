@@ -1,7 +1,7 @@
 {
   "name": "gun-node-recall",
-  "version": "1.0.0",
-  "description": "Preserve Gun DB service account sessions between server restarts. ",
+  "version": "1.0.2",
+  "description": "Preserve Gun DB service account sessions between server restarts",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
