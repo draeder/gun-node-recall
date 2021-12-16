@@ -1,6 +1,5 @@
 const env = require('dotenv').config()
 const fs = require('fs')
-const Gun = require('gun')
 let gun = require('gun')
 
 gun.recall = async function(recall, opts) { 
