@@ -1,10 +1,11 @@
 require('./index')
 const Gun = require('gun')
+const crypto = require('crypto')
 
 const gun = new Gun()
 
-let username = Math.random().toString() // insecure username
-let password = Math.random().toString() // insecure password
+let username = crypto.randomBytes(20).toString()
+let password = crypto.randomBytes(20).toString()
 
 let user = gun.user()
 
@@ -20,8 +21,8 @@ user.create(username, password, async cb => {
   gun.user().auth(recall)
   
   // Do this with caution if you depend on the files created
-  let cleanUp = await Gun.revoke(recall, opts)
-  console.log(cleanUp)
+  //let cleanUp = await Gun.revoke(recall, opts)
+  //console.log(cleanUp)
 
 })
 
