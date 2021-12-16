@@ -20,10 +20,9 @@ user.create(username, password, async cb => {
   let recall = await Gun.recall(user.recall(), opts)
   gun.user().auth(recall)
   
-  // Do this with caution if you depend on the files created
-  //let cleanUp = await Gun.revoke(recall, opts)
-  //console.log(cleanUp)
-
+  // Do this with caution if you depend on the files modified / created
+  let revoke = await Gun.revoke(recall, opts) // return the user's pub key
+  user.get(revoke).put(null) // delete the user
 })
 
 gun.on('auth', ack => console.log('Authentication was successful!'))

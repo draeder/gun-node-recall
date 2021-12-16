@@ -7,6 +7,7 @@ gun.recall = async function(recall, opts) {
   let dotenvFilename = '.env'
   
   gun.revoke = async (recall, opts) => {
+    let pub = `~${recall.pub}`
     recall = null
     if(opts && opts.filename)
     await fs.promises.unlink(opts.filename).catch(err => {})
@@ -14,7 +15,9 @@ gun.recall = async function(recall, opts) {
     if(dotenvFilename)
     await fs.promises.unlink(dotenvFilename).catch(err => {})
 
-    return "Removed files created by gun-node-recall"
+    console.log("Removed files created / modified by gun-node-recall")
+
+    return pub
   }
   
 

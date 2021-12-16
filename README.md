@@ -35,9 +35,9 @@ user.create(username, password, async cb => {
   let recall = await Gun.recall(user.recall(), opts)
   gun.user().auth(recall)
   
-  // Do this with caution if you depend on the files created
-  let cleanUp = await Gun.revoke(recall, opts)
-  console.log(cleanUp)
+  // Do this with caution if you depend on the files modified / created
+  let revoke = await Gun.revoke(recall, opts) // return the user's pub key
+  user.get(revoke).put(null) // delete the user
 
 })
 
@@ -61,5 +61,12 @@ Alternatively, you could pass the session data returned by `let recall = await G
 ### `let recall = await Gun.recall(user.recall() [, opts])`
 Creates or modifies session storage files given the optional `opts` object and returns a gun `user.recall` object that can be passed into gun to reauthenticate the stored user using `gun.user().auth(recall)`.
 
-### `let cleanup = await Gun.revoke(recall [, opts])`
-Removes any files created or modified. Be careful if using `.env` for storage with `opts.dotenv = true`; it will be removed too. This will be corrected in a later version.
+### `let revoke = await Gun.revoke(recall [, opts])`
+Removes any files created or modified and returns the user's public key as `revoke`. This can later be used to remove the user from the graph with `user.get(revoke).put(null)`. 
+
+Be careful if using `.env` for storage with `opts.dotenv = true`; it will be removed too. This will be corrected in a later version.
+
+```js
+let revoke = await Gun.revoke(recall, opts) // return the user's pub key
+user.get(revoke).put(null) // delete the user
+```
