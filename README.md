@@ -1,7 +1,7 @@
 # gun-node-recall
 Preserve Gun DB service account sessions between server restarts. 
 
-This is most certainly not secure, and should be used with caution / only in development unless proper precautions are taken to securely the session data.
+> Take care with this library that proper precautions are considered to secure the session data.
 
 ## Install
 ```js
