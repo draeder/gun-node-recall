@@ -15,11 +15,12 @@ npm i gun-node-recall
 ```js
 require('gun-node-recall')
 const Gun = require('gun')
+const crypto = require('crypto')
 
 const gun = new Gun()
 
-let username = Math.random().toString() // insecure username
-let password = Math.random().toString() // insecure password
+let username = crypto.randomBytes(20).toString()
+let password = crypto.randomBytes(20).toString()
 
 let user = gun.user()
 
@@ -41,6 +42,7 @@ user.create(username, password, async cb => {
 })
 
 gun.on('auth', ack => console.log('Authentication was successful!'))
+
 ```
 
 ### `[opts]`
