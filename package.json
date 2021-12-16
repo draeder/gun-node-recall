@@ -1,0 +1,29 @@
+{
+  "name": "gun-recall",
+  "version": "1.0.0",
+  "description": "Adds GUN user.recall() support for node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/draeder/gun-recall.git"
+  },
+  "keywords": [
+    "gun",
+    "gundb",
+    "decentralization",
+    "p2p"
+  ],
+  "author": "Daniel Raeder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/draeder/gun-recall/issues"
+  },
+  "homepage": "https://github.com/draeder/gun-recall#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "gun": "^0.2020.1235"
+  }
+}
