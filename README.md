@@ -1,7 +1,8 @@
 # gun-node-recall
 Preserve Gun DB service account sessions between server restarts. 
 
-> ⚠️ Take care that proper precautions are considered to secure session data when using this library. The `opts` object is available for development and testing purposes--it should not be used in production!
+> ⚠️ Take care that proper precautions to secure session data when using this library are considered. 
+> The `opts` object is available for development and testing purposes--it should not be used in production!
 
 ## Install
 ```js
