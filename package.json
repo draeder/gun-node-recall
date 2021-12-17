@@ -1,6 +1,6 @@
 {
   "name": "gun-node-recall",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Preserve Gun DB service account sessions between server restarts",
   "main": "index.js",
   "scripts": {
