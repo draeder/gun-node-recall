@@ -13,7 +13,7 @@ npm i gun-node-recall
 ### Example
 ```js
 require('gun-node-recall')
-onst crypto = require('crypto')
+const crypto = require('crypto')
 const Gun = require('gun')
 
 const gun = new Gun()
