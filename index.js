@@ -1,67 +1,34 @@
 const env = require('dotenv').config()
 const fs = require('fs')
-let gun = require('gun')
+let Gun = require('gun')
 
-gun.recall = async function(recall, opts) { 
-  let r = JSON.stringify(recall.is)
-  let dotenvFilename = '.env'
-  
-  gun.revoke = async (recall, opts) => {
-    let pub = `~${recall.pub}`
-    recall = null
-    if(opts && opts.filename)
-    await fs.promises.unlink(opts.filename).catch(err => {})
+Gun.chain.recall = async function(opts, cb) {
+  let gun = this
 
-    if(dotenvFilename)
-    await fs.promises.unlink(dotenvFilename).catch(err => {})
-
-    console.log("Removed files created / modified by gun-node-recall")
-
-    return pub
+  Gun.chain.recall.revoke = async (opts, cb) => {
+    if(gun.user().is){
+      gun.user().leave()
+      await fs.promises.unlink(opts.filename).catch(err => {
+        cb({code: 500, text: `Server error. Could not remove ${opts.filename}`})
+      })
+      cb({code: 200, text: `User logged out and ${opts.filename} removed.`})
+    }
   }
-  
 
   if(opts && opts.filename){
-    let found = await fs.promises.readFile(opts.filename).catch(err => false)
-    if(!found) await fs.promises.writeFile(opts.filename, r , { flag: 'w' }).catch(err => {})
-    else return JSON.parse(found)
-  }
-
-  if(opts && opts.dotenv === true){
-    let envVar = opts.dotenvVariable = opts.dotenvVariable || 'GUN_NODE_RECALL'
-
-    let envExists
-    if(!env.error) {
-      envExists = Object.keys(env.parsed).includes(envVar)
-      if(envExists === true){
-        return JSON.parse(process.env[envVar])
+    gun.on('auth', async (ack) => {
+      await fs.promises.writeFile(opts.filename, JSON.stringify(ack.sea) , { flag: 'w' }).catch(err => { console.log(err) })
+      if(gun.user().is){
+        cb(ack)
       }
-    }
-
-    let contents = await fs.promises.readFile(dotenvFilename).catch(err => false)
-
-    if(contents === false && (envExists === false || !envExists)) {
-      r = `${envVar}=${r}`
-      insert()
-    } 
-    else if (envExists === false || !envExists) {
-      r = `\n${envVar}=${r}`
-      insert()
-    } 
-    else if (envExists === true && env.parsed[envVar] != r) {
-      let data = await fs.promises.readFile(dotenvFilename)
-      data = data.toString()
-      let re = new RegExp('^.*' + data + '.*$', 'gm');
-      let formatted = data.replace(re, `${envVar}=${r}`);
-      await fs.promises.writeFile(dotenvFilename, formatted).catch(err => {throw err})
-    }
-
-    async function insert(){
-      await fs.promises.appendFile(dotenvFilename, r ).catch(err => {throw err})
-    }
+    })
+    let found = JSON.parse(await fs.promises.readFile(opts.filename).catch(err => false))
+    if(found) return found
+  } else {
+    return gun
   }
-
-  return recall.is
 }
 
-module.exports = gun
+
+
+

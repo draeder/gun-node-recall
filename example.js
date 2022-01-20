@@ -1,28 +1,36 @@
-require('./index')
-const Gun = require('gun')
 const crypto = require('crypto')
+const Gun = require('gun')
+require('./index')
 
 const gun = new Gun()
+let user = gun.user()
 
 let username = crypto.randomBytes(20).toString()
 let password = crypto.randomBytes(20).toString()
 
-let user = gun.user()
+let opts = {
+  filename: 'sessionStorage.json'
+}
 
-user.create(username, password, async cb => {
+;(async ()=> {
 
-  let opts = {
-    filename: 'sessionStorage.json',
-    dotenv: true,
-    dotenvVariable: 'GUN_NODE_RECALL'
+  let recall = await gun.recall(opts, ack => { 
+    console.log('Recall authenticated!')
+  })
+
+  console.log(recall)
+
+  if(!recall){ 
+    user.create(username, password).auth() 
+  } else {
+    user.auth(recall)
   }
-  
-  let recall = await Gun.recall(user.recall(), opts)
-  gun.user().auth(recall)
-  
-  // Do this with caution if you depend on the files modified / created
-  let revoke = await Gun.revoke(recall, opts) // return the user's pub key
-  user.get(revoke).put(null) // delete the user
-})
 
-gun.on('auth', ack => console.log('Authentication was successful!'))
+  gun.recall.revoke(opts, ack => {
+    console.log(ack)
+  })
+
+})()
+
+
+
